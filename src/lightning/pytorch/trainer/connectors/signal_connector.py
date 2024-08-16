@@ -1,5 +1,6 @@
 import logging
 import os
+import sys
 import re
 import signal
 import threading
@@ -101,6 +102,7 @@ class _SignalConnector:
                 log.info(f"Requeued SLURM job: {job_id}")
             else:
                 log.warning(f"Requeuing SLURM job {job_id} failed with error code {result}")
+                sys.exit(result)
 
     def _sigterm_notifier_fn(self, signum: _SIGNUM, _: FrameType) -> None:
         log.info(rank_prefixed_message(f"Received SIGTERM: {signum}", self.trainer.local_rank))
